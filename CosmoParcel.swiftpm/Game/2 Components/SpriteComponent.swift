@@ -11,13 +11,21 @@ import GameplayKit
 final class SpriteComponent: GKComponent {
     let node: SKSpriteNode
 
-    init(texture: SKTexture? = nil, color: UIColor? = nil, size: CGSize? = nil) {
+    init(
+        texture: SKTexture? = nil,
+        color: UIColor? = nil,
+        size: CGSize? = nil,
+        initialPosition: CGPoint? = nil
+    ) {
         self.node = SKSpriteNode(
             texture: texture,
             color: color ?? .white,
             size: size ?? .init(width: 10, height: 10)
         )
         super.init()
+        if let position = initialPosition {
+            node.position = position
+        }
     }
 
     @available(*, unavailable)

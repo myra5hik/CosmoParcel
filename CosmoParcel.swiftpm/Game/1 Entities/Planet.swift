@@ -12,7 +12,13 @@ final class Planet: GKEntity {
     override init() {
         super.init()
         // Sprite component
-        let spriteComponent = SpriteComponent(color: .blue, size: .init(width: 20, height: 20))
+        let atlas = SKTextureAtlas(named: "Planet1")
+        let texture = atlas.textureNamed("Planet1-0")
+        let spriteComponent = SpriteComponent(
+            texture: texture,
+            size: .init(width: 0.5, height: 0.5),
+            initialPosition: .init(x: 0.5, y: 0.5)
+        )
         self.addComponent(spriteComponent)
     }
 
