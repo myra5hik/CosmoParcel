@@ -20,7 +20,7 @@ final class SpriteComponent: GKComponent {
         self.node = SKSpriteNode(
             texture: texture,
             color: color ?? .white,
-            size: size ?? .init(width: 10, height: 10)
+            size: size ?? .init(width: 0.5, height: 0.5)
         )
         super.init()
         if let position = initialPosition {

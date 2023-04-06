@@ -12,14 +12,12 @@ final class Planet: GKEntity {
     override init() {
         super.init()
         // Sprite component
-        let atlas = SKTextureAtlas(named: "Planet1")
-        let texture = atlas.textureNamed("Planet1-0")
-        let spriteComponent = SpriteComponent(
-            texture: texture,
-            size: .init(width: 0.5, height: 0.5),
-            initialPosition: .init(x: 0.5, y: 0.5)
-        )
+        let spriteComponent = SpriteComponent(initialPosition: .init(x: 0.5, y: 0.5))
         self.addComponent(spriteComponent)
+        // Animation component
+        let atlas = SKTextureAtlas(named: "Planet1")
+        let animationComponent = AnimationComponent(node: spriteComponent.node, atlas: atlas)
+        self.addComponent(animationComponent)
     }
 
     @available(*, unavailable)
