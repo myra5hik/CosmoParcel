@@ -11,7 +11,7 @@ import GameplayKit
 
 final class EntityManager {
     private var entities = Set<GKEntity>()
-    private let scene: SKScene
+    weak private var scene: SKScene?
 
     init(scene: SKScene) {
         self.scene = scene
@@ -22,7 +22,7 @@ final class EntityManager {
         entities.insert(entity)
         // Adds to the scene
         if let node = entity.component(ofType: SpriteComponent.self)?.node {
-            scene.addChild(node)
+            scene?.addChild(node)
         }
     }
 

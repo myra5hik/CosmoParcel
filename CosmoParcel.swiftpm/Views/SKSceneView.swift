@@ -17,6 +17,7 @@ struct SKSceneView: UIViewRepresentable {
         skView.contentMode = .scaleAspectFit
         skView.showsFPS = true
         skView.showsNodeCount = true
+        skView.showsPhysics = true
         skView.ignoresSiblingOrder = true
         return skView
     }
