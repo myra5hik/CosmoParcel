@@ -9,7 +9,7 @@ import SpriteKit
 import GameplayKit
 
 final class CosmicObject: GKEntity {
-    init(mass: Double, position: CGPoint? = nil, size: CGSize? = nil) {
+    init(mass: Double, position: CGPoint? = nil, size: CGSize? = nil, texture: Texture = .planet1) {
         super.init()
         // Sprite component
         let spriteComponent = SpriteComponent(
@@ -19,7 +19,7 @@ final class CosmicObject: GKEntity {
         let node = spriteComponent.node
         self.addComponent(spriteComponent)
         // Animation component
-        let atlas = SKTextureAtlas(named: "Planet1")
+        let atlas = SKTextureAtlas(named: texture.rawValue)
         let animationComponent = AnimationComponent(node: spriteComponent.node, atlas: atlas)
         self.addComponent(animationComponent)
         // Gravity component
@@ -30,4 +30,14 @@ final class CosmicObject: GKEntity {
 
     @available(*, unavailable)
     required init?(coder: NSCoder) { return nil }
+}
+
+// MARK: - Preset Sprites
+
+extension CosmicObject {
+    enum Texture: String {
+        case planet1 = "Planet1"
+        case moon1 = "Moon1"
+        case star1 = "Star1"
+    }
 }

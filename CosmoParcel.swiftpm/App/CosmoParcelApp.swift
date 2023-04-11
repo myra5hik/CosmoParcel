@@ -26,7 +26,8 @@ struct CosmoParcelApp: App {
         let satellite = CosmicObject(
             mass: 1_000,
             position: .init(x: 500, y: 900),
-            size: .init(width: satelliteRadius, height: satelliteRadius)
+            size: .init(width: satelliteRadius, height: satelliteRadius),
+            texture: .moon1
         )
         entityManager.add(entity: satellite)
 

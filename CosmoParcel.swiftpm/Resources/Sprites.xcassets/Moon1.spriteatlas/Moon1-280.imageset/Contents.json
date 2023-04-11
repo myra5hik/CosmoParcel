@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "Moon1-280.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
