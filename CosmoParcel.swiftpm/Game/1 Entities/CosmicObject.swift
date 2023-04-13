@@ -17,6 +17,7 @@ final class CosmicObject: GKEntity {
             initialPosition: position ?? .init(x: 0, y: 0)
         )
         let node = spriteComponent.node
+        node.zPosition = 0
         self.addComponent(spriteComponent)
         // Animation component
         let atlas = SKTextureAtlas(named: texture.rawValue)

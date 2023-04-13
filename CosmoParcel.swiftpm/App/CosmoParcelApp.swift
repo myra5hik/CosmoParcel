@@ -30,8 +30,15 @@ struct CosmoParcelApp: App {
             texture: .moon1
         )
         entityManager.add(entity: satellite)
-
         satellite.component(ofType: GravityComponent.self)?.setOrbiting(around: planet)
+
+        let rocket = Rocket(
+            mass: 1,
+            position: .init(x: 500, y: 525),
+            thrust: 75_000
+        )
+        rocket.component(ofType: EngineComponent.self)?.isOn = true
+        entityManager.add(entity: rocket)
     }
 
     var body: some Scene {

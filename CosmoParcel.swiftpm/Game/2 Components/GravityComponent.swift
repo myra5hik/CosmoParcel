@@ -53,7 +53,6 @@ private extension GravityComponent {
     func setPhysicsBodyParameters(_ node: SKNode) {
         node.physicsBody?.mass = mass
         node.physicsBody?.linearDamping = 0.0
-        node.physicsBody?.friction = 0.0
         node.physicsBody?.restitution = 0.0
         node.physicsBody?.angularDamping = 0.0
     }

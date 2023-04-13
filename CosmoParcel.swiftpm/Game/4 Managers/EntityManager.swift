@@ -11,9 +11,9 @@ import GameplayKit
 
 final class EntityManager {
     private var entities = Set<GKEntity>()
-    weak private var scene: SKScene?
+    weak private var scene: GameScene?
 
-    init(scene: SKScene) {
+    init(scene: GameScene) {
         self.scene = scene
     }
 
@@ -24,6 +24,10 @@ final class EntityManager {
         if let node = entity.component(ofType: SpriteComponent.self)?.node {
             scene?.addChild(node)
         }
+        // Adds to the systems
+        for system in scene?.systems ?? [] {
+            system.addComponent(foundIn: entity)
+        }
     }
 
     func remove(entity: GKEntity) {
@@ -32,6 +36,10 @@ final class EntityManager {
         // Removes from the scene
         if let node = removed.component(ofType: SpriteComponent.self)?.node {
             node.removeFromParent()
+        }
+        // Removes from the systems
+        for system in scene?.systems ?? [] {
+            system.removeComponent(foundIn: removed)
         }
     }
 }
