@@ -21,7 +21,8 @@ final class GameScene: SKScene {
     override init() {
         super.init(size: .init(width: 1000, height: 1000))
         physicsWorld.gravity = .zero
-        physicsWorld.speed = 1
+        physicsWorld.speed = 0
+        self.isPaused = true
     }
 
     @available(*, unavailable)
@@ -33,5 +34,12 @@ final class GameScene: SKScene {
         for system in systems {
             system.update(deltaTime: delta)
         }
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        guard let _ = touches.first else { return }
+        self.isPaused = false
+        physicsWorld.speed = 1
     }
 }

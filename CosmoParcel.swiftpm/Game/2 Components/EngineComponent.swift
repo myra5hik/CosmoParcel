@@ -30,7 +30,7 @@ final class EngineComponent: GKComponent {
         
         guard let node = self.entity?.component(ofType: SpriteComponent.self)?.node else { assertionFailure(); return }
         let angle = node.zRotation + .pi / 2 // Texture is vertical
-        let force = CGVector(dx: cos(angle) * thrust * seconds, dy: sin(angle) * thrust * seconds)
+        let force = CGVector(dx: cos(angle) * thrust, dy: sin(angle) * thrust)
         node.physicsBody?.applyForce(force)
     }
 }

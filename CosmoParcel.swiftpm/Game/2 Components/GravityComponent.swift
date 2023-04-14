@@ -9,6 +9,9 @@ import Foundation
 import SceneKit
 import GameplayKit
 
+let metersPerPoint = 1_000.0
+let scalingVsSpriteKit = 1.0 / (150.0 * metersPerPoint)
+
 final class GravityComponent: GKComponent {
     static let bigG = 6.6743 * pow(10.0, -11.0)
     let mass: Double
@@ -45,6 +48,14 @@ final class GravityComponent: GKComponent {
         let impulse = CGVector(dx: cos(angle) * momentum, dy: sin(angle) * momentum)
         sprite.node.physicsBody?.applyImpulse(impulse)
     }
+
+    func thrustRequiredToEscape(forRocketWithMass rocketMass: Double) -> Double {
+        guard let sprite = self.entity?.component(ofType: SpriteComponent.self) else { assertionFailure(); return 0.0 }
+        let planetRadius = (sprite.node.size.width / 2) / 150
+        // F = G * M * m / r^2
+        let requiredThrust = fieldStrength * rocketMass / (planetRadius * planetRadius) * 150
+        return requiredThrust
+    }
 }
 
 // MARK: - Private
@@ -54,7 +65,8 @@ private extension GravityComponent {
         node.physicsBody?.mass = mass
         node.physicsBody?.linearDamping = 0.0
         node.physicsBody?.restitution = 0.0
-        node.physicsBody?.angularDamping = 0.0
+        node.physicsBody?.angularDamping = 1.0
+        node.physicsBody?.friction = 0.9
     }
 
     func addRadialGravity(_ node: SKNode) {

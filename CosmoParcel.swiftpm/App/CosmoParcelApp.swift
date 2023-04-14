@@ -14,28 +14,32 @@ struct CosmoParcelApp: App {
         // Managers
         self.entityManager = EntityManager(scene: scene)
         // Adding entities
-        let planetRadius = 50
+        let planetRadius = 6_378.1 / metersPerPoint * 5
         let planet = CosmicObject(
-            mass: 10_000_000_000,
+            mass: 1_000_000_000,
             position: .init(x: 500, y: 500),
-            size: .init(width: planetRadius, height: planetRadius)
+            size: .init(width: planetRadius * 2, height: planetRadius * 2)
         )
         entityManager.add(entity: planet)
 
-        let satelliteRadius = 10
+        let satelliteRadius = 1_738.1 / metersPerPoint * 5
         let satellite = CosmicObject(
             mass: 1_000,
-            position: .init(x: 500, y: 900),
-            size: .init(width: satelliteRadius, height: satelliteRadius),
+            position: .init(x: 500, y: 500 + 384_399 / metersPerPoint),
+            size: .init(width: satelliteRadius * 2, height: satelliteRadius * 2),
             texture: .moon1
         )
         entityManager.add(entity: satellite)
         satellite.component(ofType: GravityComponent.self)?.setOrbiting(around: planet)
 
+        let rocketMass = 10.0
+        let thrust = planet.component(ofType: GravityComponent.self)?.thrustRequiredToEscape(forRocketWithMass: rocketMass) ?? 0.0
+        let rocketHeight = 10.0
         let rocket = Rocket(
-            mass: 1,
-            position: .init(x: 500, y: 525),
-            thrust: 75_000
+            mass: rocketMass,
+            position: .init(x: 500, y: 500 + planetRadius + rocketHeight / 2),
+            height: rocketHeight,
+            thrust: thrust * 1.1
         )
         rocket.component(ofType: EngineComponent.self)?.isOn = true
         entityManager.add(entity: rocket)
