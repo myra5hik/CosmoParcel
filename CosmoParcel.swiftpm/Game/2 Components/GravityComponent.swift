@@ -9,13 +9,14 @@ import Foundation
 import SceneKit
 import GameplayKit
 
-let metersPerPoint = 1_000.0
-let scalingVsSpriteKit = 1.0 / (150.0 * metersPerPoint)
-
 final class GravityComponent: GKComponent {
     static let bigG = 6.6743 * pow(10.0, -11.0)
     let mass: Double
-    var fieldStrength: Double { Self.bigG * mass }
+    var fieldStrength: Double {
+        let scale = GameScaling.scalingVsSpriteKit
+        // Field strength = G * M / r^2 => corrected by scale^(-2)
+        return Self.bigG * mass * (scale * scale)
+    }
 
     init(mass: Double, node: SKNode) {
         self.mass = mass
@@ -34,8 +35,8 @@ final class GravityComponent: GKComponent {
             let otherSprite = other.component(ofType: SpriteComponent.self)
         else { assertionFailure(); return }
 
-        // Calculating magnitude of the applied impulse
         // NOTE: 150 comes from the fact that SpriteKit uses 150 pts / m scaling
+        // Calculating magnitude of the applied impulse
         /// Orbit radius
         let r = sprite.distance(to: otherSprite) / 150
         // v = sqrt(G * M / r) = sqrt(fieldStrength / r)
@@ -49,11 +50,16 @@ final class GravityComponent: GKComponent {
         sprite.node.physicsBody?.applyImpulse(impulse)
     }
 
-    func thrustRequiredToEscape(forRocketWithMass rocketMass: Double) -> Double {
-        guard let sprite = self.entity?.component(ofType: SpriteComponent.self) else { assertionFailure(); return 0.0 }
-        let planetRadius = (sprite.node.size.width / 2) / 150
-        // F = G * M * m / r^2
-        let requiredThrust = fieldStrength * rocketMass / (planetRadius * planetRadius) * 150
+    func thrustRequiredToEscape(rocketHeight: Double, rocketMass: Double) -> Double {
+        guard let ownNode = self.entity?.component(ofType: SpriteComponent.self)?.node else {
+            assertionFailure(); return 0.0
+        }
+        // NOTE: 150 comes from the fact that SpriteKit uses 150 pts / m scaling
+        let planetRadius = (ownNode.size.width / 2) / 150
+        let rocketCenterDistance = (rocketHeight / 2) / 150
+        let totalDistance = planetRadius + rocketCenterDistance
+        // F = G * M * m / r^2, where G * M = fieldStrength
+        let requiredThrust = fieldStrength * rocketMass / (totalDistance * totalDistance) * 150
         return requiredThrust
     }
 }

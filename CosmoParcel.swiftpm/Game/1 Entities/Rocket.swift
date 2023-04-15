@@ -27,6 +27,7 @@ final class Rocket: GKEntity {
         // Physics body
         node.physicsBody = SKPhysicsBody(texture: texture, size: node.size)
         node.physicsBody?.mass = mass
+        node.physicsBody?.linearDamping = 0.0
         // Engine
         let engineComponent = EngineComponent(thrust: thrust)
         self.addComponent(engineComponent)
