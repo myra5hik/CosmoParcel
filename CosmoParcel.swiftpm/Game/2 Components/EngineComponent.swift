@@ -12,6 +12,7 @@ import GameplayKit
 final class EngineComponent: GKComponent {
     // Public settable
     var isOn = false
+    var shutDownCondition: (() -> Bool)?
     // Public
     let thrust: CGFloat
 
@@ -25,10 +26,11 @@ final class EngineComponent: GKComponent {
 
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
-        guard seconds < 1 else { return }
         guard isOn else { return }
-        
+        guard seconds < 1 else { return }
+        guard shutDownCondition?() ?? false == false else { isOn = false; return }
         guard let node = self.entity?.component(ofType: SpriteComponent.self)?.node else { assertionFailure(); return }
+
         let angle = node.zRotation + .pi / 2 // Texture is vertical
         let force = CGVector(dx: cos(angle) * thrust, dy: sin(angle) * thrust)
         node.physicsBody?.applyForce(force)

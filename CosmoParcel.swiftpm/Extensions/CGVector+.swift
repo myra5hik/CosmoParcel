@@ -8,6 +8,8 @@
 import Foundation
 import CoreGraphics
 
+// MARK: - AdditiveArithmetic
+
 extension CGVector: AdditiveArithmetic {
     public static prefix func - (vector: CGVector) -> CGVector {
         return CGVector(dx: -vector.dx, dy: -vector.dy)
@@ -28,4 +30,10 @@ extension CGVector: AdditiveArithmetic {
     public static func -= (lhs: inout CGVector, rhs: CGVector) {
         lhs = lhs - rhs
     }
+}
+
+// MARK: Magnitude
+
+extension CGVector {
+    var magnitude: CGFloat { sqrt(dx * dx + dy * dy) }
 }

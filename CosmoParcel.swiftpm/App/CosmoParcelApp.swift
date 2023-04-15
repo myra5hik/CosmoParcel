@@ -1,6 +1,7 @@
 
 import SwiftUI
 import SpriteKit
+import GameplayKit
 
 @main
 struct CosmoParcelApp: App {
@@ -45,7 +46,14 @@ struct CosmoParcelApp: App {
             height: rocketHeight,
             thrust: thrust * (1 + 0.1 * GameScaling.scalingVsSpriteKit)
         )
-        rocket.component(ofType: EngineComponent.self)?.isOn = true
+
+        let planetGravity = planet.component(ofType: GravityComponent.self)
+        let engine = rocket.component(ofType: EngineComponent.self)
+        engine?.isOn = true
+        engine?.shutDownCondition = { [weak rocket, weak planetGravity] in
+            guard let rocket = rocket, let planetGravity = planetGravity else { return false }
+            return planetGravity.hasReachedEscapeVelocity(rocket)
+        }
         entityManager.add(entity: rocket)
     }
 
