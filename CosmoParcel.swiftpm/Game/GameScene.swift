@@ -29,9 +29,7 @@ final class GameScene: SKScene {
 
     init(touchesDelegate: ITouchesInputDelegate? = nil) {
         super.init(size: .init(width: 1000, height: 1000))
-        self.isPaused = true
         addTouchesInputNode()
-        touchesInputNode.delegate = touchesDelegate
         setupPhysics()
     }
 
@@ -49,8 +47,8 @@ final class GameScene: SKScene {
     // MARK: Physics setup
 
     private func setupPhysics() {
+        // Gravity will be driven by individual gravity fields of the cosmic objects
         physicsWorld.gravity = .zero
-        physicsWorld.speed = 0
     }
 
     // MARK: Touches setup
@@ -61,6 +59,7 @@ final class GameScene: SKScene {
         node.zPosition = 100
         self.touchesInputNode = node
         self.addChild(node)
+        touchesInputNode.delegate = touchesDelegate
     }
 
     override func didChangeSize(_ oldSize: CGSize) {
@@ -68,6 +67,5 @@ final class GameScene: SKScene {
         touchesInputNode?.removeFromParent()
         touchesInputNode = nil
         addTouchesInputNode()
-        touchesInputNode.delegate = touchesDelegate
     }
 }

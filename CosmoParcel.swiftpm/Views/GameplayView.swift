@@ -9,6 +9,9 @@ import SwiftUI
 import SpriteKit
 
 struct GameplayView: View {
+    // Public
+    private(set) var gameState: GameState
+    // Private
     private let scene: GameScene
     private let entityManager: EntityManager
 
@@ -19,13 +22,15 @@ struct GameplayView: View {
         self.entityManager = EntityManager(scene: scene)
         // Loads level
         level.load(into: scene, entityManager: entityManager)
+        // Sets game state
+        self.gameState = GameState(scene: scene, entityManager: entityManager)
     }
 
     var body: some View {
         HStack {
             SKSceneView(scene: scene)
                 .aspectRatio(1.0, contentMode: .fit)
-            ControlPanelView()
+            ControlPanelView(gameState: gameState)
                 .layoutPriority(1)
         }
     }

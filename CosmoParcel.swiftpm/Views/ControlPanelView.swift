@@ -8,13 +8,22 @@
 import SwiftUI
 
 struct ControlPanelView: View {
+    // Dependencies
+    @ObservedObject var gameState: GameState
+
     var body: some View {
-        Text("Control Panel")
+        Button("Launch Rocket") {
+            gameState.launchRocket()
+        }
     }
 }
 
 struct ControlPanelView_Previews: PreviewProvider {
     static var previews: some View {
-        ControlPanelView()
+        let scene = GameScene()
+        let entityManager = EntityManager(scene: scene)
+        let gameState = GameState(scene: scene, entityManager: entityManager)
+
+        return ControlPanelView(gameState: gameState)
     }
 }

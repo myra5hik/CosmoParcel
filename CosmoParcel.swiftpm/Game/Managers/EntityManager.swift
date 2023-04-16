@@ -10,7 +10,7 @@ import SpriteKit
 import GameplayKit
 
 final class EntityManager {
-    private var entities = Set<GKEntity>()
+    private(set) var entities = Set<GKEntity>()
     weak private var scene: GameScene?
 
     init(scene: GameScene) {

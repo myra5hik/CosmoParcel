@@ -65,8 +65,6 @@ struct Level {
         }
         // Rocket - Add entity
         entityManager.add(entity: rocket)
-        // Touches delegate
-        scene.touchesDelegate = rocket.component(ofType: LaunchPositioningComponent.self)
     }
 }
 
