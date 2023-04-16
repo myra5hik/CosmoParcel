@@ -12,7 +12,15 @@ final class GameState: ObservableObject {
     @Published private(set) var stage = GameStage.positioning {
         didSet { handleStageChanged() }
     }
+    var timeWarp: Double {
+        get { _timeWarp }
+        set { _timeWarp = newValue }
+    }
     // Private
+    private var _timeWarp = 0.0 {
+        didSet { handleTimeWarpChanged() }
+        willSet { objectWillChange.send() }
+    }
     private var rocket: Rocket?
     // Dependencies
     private let scene: GameScene
@@ -23,6 +31,17 @@ final class GameState: ObservableObject {
         self.scene = scene
         self.rocket = entityManager.entities.first(where: { $0 is Rocket }) as? Rocket
         handleStageChanged()
+    }
+}
+
+// MARK: - Time warp manipulation private methods
+
+private extension GameState {
+    func handleTimeWarpChanged() {
+        let spriteKitTime = timeWarp * GameScaling.timeScalingVsSpriteKit
+        scene.isPaused = (timeWarp <= 0.0 + .leastNonzeroMagnitude)
+        scene.speed = spriteKitTime
+        scene.physicsWorld.speed = spriteKitTime
     }
 }
 
@@ -45,16 +64,12 @@ private extension GameState {
     }
 
     func handleStageChangedToPositioning() {
-        scene.isPaused = true
-        scene.speed = 0.0
-        scene.physicsWorld.speed = 0.0
+        timeWarp = 1.0
         scene.touchesDelegate = rocket?.component(ofType: LaunchPositioningComponent.self)
     }
 
     func handleStageChangedToTraversing() {
-        scene.isPaused = false
-        scene.speed = 1.0
-        scene.physicsWorld.speed = 1.0
+        timeWarp = 22_500.0
         scene.touchesDelegate = nil
 
         guard let engine = rocket?.component(ofType: EngineComponent.self) else { assertionFailure(); return }

@@ -12,10 +12,15 @@ import Foundation
 /// Additionally, they set irrealistic scaling parameters so that the cosmic objects are more visible in the game scene.
 ///
 enum GameScaling {
+    // MARK: Distances
+
     /// Scaling in meters per 1 SpriteKit point
     static let metersPerPoint = 1_000_000.0
     /// Scaling ratio against SpriteKit's native scaling
     static let scalingVsSpriteKit = 1.0 / (150.0 * metersPerPoint)
     /// Additional irrealistic scaling of cosmic objects to aid gameplay
     static let cosmicObjectsScaleVsReality = 5.0
+
+    // MARK: Time
+    static let timeScalingVsSpriteKit = 1.0 / (150.0 * 150.0)
 }
