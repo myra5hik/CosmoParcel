@@ -24,7 +24,11 @@ struct Level {
         // Launch from cosmic object
         entityManager.add(entity: launchObject)
         // Target object
+        let targetNode = targetObject.component(ofType: SpriteComponent.self)?.node
+        let targetRadius = (targetNode?.size.height ?? 10.0) / 2.0
+        targetObject.addComponent(BeaconComponent(radius: targetRadius * 0.4))
         entityManager.add(entity: targetObject)
+        targetObject.component(ofType: BeaconComponent.self)?.turnOn()
         // Other objects
         for object in otherObjects {
             entityManager.add(entity: object)
