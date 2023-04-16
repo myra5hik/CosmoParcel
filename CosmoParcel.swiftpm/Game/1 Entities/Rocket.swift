@@ -10,7 +10,13 @@ import SpriteKit
 import GameplayKit
 
 final class Rocket: GKEntity {
-    init(mass: Double, position: CGPoint? = nil, height: CGFloat? = nil, thrust: CGFloat) {
+    init(
+        mass: Double,
+        position: CGPoint? = nil,
+        height: CGFloat? = nil,
+        thrust: CGFloat,
+        launchFromObject: CosmicObject? = nil
+    ) {
         super.init()
         // Sprite component
         let texture = SKTexture(imageNamed: "RocketShip")
@@ -31,6 +37,11 @@ final class Rocket: GKEntity {
         // Engine
         let engineComponent = EngineComponent(thrust: thrust)
         self.addComponent(engineComponent)
+        // Manual launch positioning component
+        if let launchFromObject = launchFromObject {
+            let component = LaunchPositioningComponent(from: launchFromObject)
+            self.addComponent(component)
+        }
     }
 
     @available(*, unavailable)

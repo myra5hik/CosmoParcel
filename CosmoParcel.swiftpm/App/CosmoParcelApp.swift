@@ -44,8 +44,10 @@ struct CosmoParcelApp: App {
             mass: rocketMass,
             position: .init(x: 500, y: 500 + planetRadius + rocketHeight / 2),
             height: rocketHeight,
-            thrust: thrust * (1 + 0.1 * GameScaling.scalingVsSpriteKit)
+            thrust: thrust * (1 + 0.1 * GameScaling.scalingVsSpriteKit),
+            launchFromObject: planet
         )
+        scene.touchesDelegate = rocket.component(ofType: LaunchPositioningComponent.self)
 
         let planetGravity = planet.component(ofType: GravityComponent.self)
         let engine = rocket.component(ofType: EngineComponent.self)

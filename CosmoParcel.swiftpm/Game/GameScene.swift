@@ -17,12 +17,22 @@ final class GameScene: SKScene {
         let engineSystem = GKComponentSystem(componentClass: EngineComponent.self)
         return [engineSystem]
     }()
+    // Touches
+    override var isUserInteractionEnabled: Bool {
+        get { true }
+        set { } // Ignored
+    }
+    weak var touchesDelegate: ITouchesInputDelegate? {
+        didSet { touchesInputNode.delegate = touchesDelegate }
+    }
+    private var touchesInputNode: TouchesInputNode!
 
-    override init() {
+    init(touchesDelegate: ITouchesInputDelegate? = nil) {
         super.init(size: .init(width: 1000, height: 1000))
-        physicsWorld.gravity = .zero
-        physicsWorld.speed = 0
         self.isPaused = true
+        addTouchesInputNode()
+        touchesInputNode.delegate = touchesDelegate
+        setupPhysics()
     }
 
     @available(*, unavailable)
@@ -36,10 +46,28 @@ final class GameScene: SKScene {
         }
     }
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        guard let _ = touches.first else { return }
-        self.isPaused = false
-        physicsWorld.speed = 1
+    // MARK: Physics setup
+
+    private func setupPhysics() {
+        physicsWorld.gravity = .zero
+        physicsWorld.speed = 0
+    }
+
+    // MARK: Touches setup
+
+    private func addTouchesInputNode() {
+        let node = TouchesInputNode(color: .clear, size: self.size)
+        node.position = .init(x: self.size.width / 2, y: self.size.height / 2)
+        node.zPosition = 100
+        self.touchesInputNode = node
+        self.addChild(node)
+    }
+
+    override func didChangeSize(_ oldSize: CGSize) {
+        super.didChangeSize(oldSize)
+        touchesInputNode?.removeFromParent()
+        touchesInputNode = nil
+        addTouchesInputNode()
+        touchesInputNode.delegate = touchesDelegate
     }
 }
