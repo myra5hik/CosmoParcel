@@ -14,6 +14,7 @@ struct ControlPanelView: View {
     var body: some View {
         VStack {
             timeWarpIndicator
+            Spacer()
             appropriateControlPanel
             Spacer()
         }
@@ -24,7 +25,10 @@ struct ControlPanelView: View {
     private var timeWarpIndicator: some View {
         withProminentBackground {
             let multiplier = gameState.timeWarp.formatted(.number.rounded().precision(.fractionLength(0)))
-            return Text("Time speed: \(multiplier)x")
+            return HStack {
+                Image(systemName: "forward.fill")
+                Text("Time flow speed: \(multiplier)x")
+            }
         }
         .frame(height: 50)
     }
@@ -32,10 +36,36 @@ struct ControlPanelView: View {
     @ViewBuilder
     private var appropriateControlPanel: some View {
         switch gameState.stage {
-        case .notStarted, .intro, .traversing: EmptyView()
+        case .notStarted: EmptyView()
+        case .intro: introHint
         case .positioning: positioningControlPanel
-        case .targetReached: EmptyView()
+        case .cruising: cruisingHint
+        case .targetReached: targetReached
         }
+    }
+
+    // MARK: Intro
+
+    private var introHint: some View {
+        let text = [
+            "Observe the conditions of the mission.",
+            "The colony is sending a signal with a beacon.",
+            "Your mission is to deliver the cargo to the colony."
+        ].joined(separator: " ")
+
+        return iconAndText(
+            icon: "light.beacon.max.fill",
+            text: text
+        )
+    }
+
+    // MARK: Traversing
+
+    private var cruisingHint: some View {
+        return iconAndText(
+            icon: "arrow.up.right",
+            text: "The vehicle is cruising as per the set trajectory."
+        )
     }
 
     // MARK: Positioning
@@ -48,15 +78,10 @@ struct ControlPanelView: View {
     }
 
     private var positioningHint: some View {
-        withProminentBackground {
-            VStack(spacing: 30) {
-                Image(systemName: "hand.draw.fill").font(.system(size: 100))
-                    .offset(x: -10)
-                Text("Set the initial rocket's trajectory by dragging a finger over the screen")
-                    .multilineTextAlignment(.center)
-            }
-        }
-        .aspectRatio(1.0, contentMode: .fit)
+        iconAndText(
+            icon: "hand.draw.fill",
+            text: "Set the initial rocket's trajectory by dragging a finger over the screen"
+        )
     }
 
     private var launchButton: some View {
@@ -65,6 +90,15 @@ struct ControlPanelView: View {
         }
         .buttonStyle(.borderedProminent)
         .font(.system(size: 16, weight: .medium))
+    }
+
+    // MARK: Target reached
+
+    private var targetReached: some View {
+        iconAndText(
+            icon: "checkmark.square.fill",
+            text: "Mission accomplished! You have delivered the parcel to the colony."
+        )
     }
 
     // MARK: Convenience methods
@@ -76,6 +110,16 @@ struct ControlPanelView: View {
             contents()
                 .padding(20)
         }
+    }
+
+    private func iconAndText(icon: String, text: String) -> some View {
+        withProminentBackground {
+            VStack(spacing: 30) {
+                Image(systemName: icon).font(.system(size: 100))
+                Text(text).multilineTextAlignment(.center)
+            }
+        }
+        .aspectRatio(1.0, contentMode: .fit)
     }
 }
 

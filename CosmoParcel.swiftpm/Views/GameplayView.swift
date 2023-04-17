@@ -38,6 +38,7 @@ struct GameplayView: View {
                 gamePlayView
             }
         }
+        .mask { RoundedRectangle(cornerRadius: 16) }
         .onChange(of: isPaused) {
             guard $0 == false else { return }
             gameState.startGame()

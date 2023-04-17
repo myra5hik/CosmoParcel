@@ -45,7 +45,7 @@ extension GameState {
     }
 
     func launchRocket() {
-        stage = .traversing
+        stage = .cruising
     }
 }
 
@@ -68,7 +68,7 @@ private extension GameState {
         case .notStarted: handleStageChangedToInitialising()
         case .intro: handleStageChangedToIntro()
         case .positioning: handleStageChangedToPositioning()
-        case .traversing: handleStageChangedToTraversing()
+        case .cruising: handleStageChangedToTraversing()
         case .targetReached: handleStageChangedToTargetReached()
         }
 
@@ -230,7 +230,7 @@ extension GameState {
         /// Stage of the game when the player is positioning the rocket before the launch
         case positioning
         /// Stage of the game when the rocket is launched and traversing the space
-        case traversing
+        case cruising
         /// Stage of the game when player successfully reached target object
         case targetReached
 
@@ -238,8 +238,8 @@ extension GameState {
             switch self {
             case .notStarted: return [.intro, .notStarted]
             case .intro: return [.positioning]
-            case .positioning: return [.traversing]
-            case .traversing: return [.targetReached]
+            case .positioning: return [.cruising]
+            case .cruising: return [.targetReached]
             case .targetReached: return []
             }
         }
