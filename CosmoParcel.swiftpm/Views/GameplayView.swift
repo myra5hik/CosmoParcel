@@ -28,7 +28,7 @@ struct GameplayView: View {
 
     var body: some View {
         HStack {
-            SKSceneView(scene: scene)
+            SpriteView(scene: scene, debugOptions: [.showsDrawCount, .showsFPS, .showsPhysics, .showsNodeCount])
                 .aspectRatio(1.0, contentMode: .fit)
             ControlPanelView(gameState: gameState)
                 .layoutPriority(1)

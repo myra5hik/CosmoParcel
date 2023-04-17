@@ -29,6 +29,7 @@ final class GameScene: SKScene {
 
     init(touchesDelegate: ITouchesInputDelegate? = nil) {
         super.init(size: .init(width: 1000, height: 1000))
+        addCamera()
         addTouchesInputNode()
         setupPhysics()
     }
@@ -42,6 +43,15 @@ final class GameScene: SKScene {
         for system in systems {
             system.update(deltaTime: delta)
         }
+    }
+
+    // MARK: Camera setup
+
+    private func addCamera() {
+        let camera = SKCameraNode()
+        camera.position = .init(x: self.size.width / 2, y: self.size.height / 2)
+        self.camera = camera
+        self.addChild(camera)
     }
 
     // MARK: Physics setup
