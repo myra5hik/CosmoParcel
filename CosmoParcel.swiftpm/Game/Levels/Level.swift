@@ -42,13 +42,6 @@ struct Level {
             ))
             entityManager.add(entity: object)
         }
-        // Movement configurations
-        for pair in orbitingPairs {
-            let anchor = pair.orbitsAround
-            let satellite = pair.0
-            let clockwise = pair.clockwise
-            satellite.component(ofType: GravityComponent.self)?.setOrbiting(around: anchor, clockwise: clockwise)
-        }
         // Rocket - Basic setup
         let rocketMass = 10.0
         let rocketHeight = 10.0
@@ -79,12 +72,22 @@ struct Level {
         // Rocket - Add entity
         entityManager.add(entity: rocket)
     }
+
+    func applyInitialPhysics() {
+        // Movement configurations
+        for pair in orbitingPairs {
+            let anchor = pair.orbitsAround
+            let satellite = pair.0
+            let clockwise = pair.clockwise
+            satellite.component(ofType: GravityComponent.self)?.setOrbiting(around: anchor, clockwise: clockwise)
+        }
+    }
 }
 
 // MARK: - Tutorial level
 
 extension Level {
-    static var tutorial: Level {
+    static func tutorial() -> Level {
         // Earth
         let earthRadius = 6_378_100 / metersPerPoint * cosmicObjectsScaleVsReality
         let earth = CosmicObject(

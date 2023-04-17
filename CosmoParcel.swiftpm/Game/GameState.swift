@@ -10,7 +10,7 @@ import SpriteKit
 
 final class GameState: NSObject, ObservableObject {
     // Public
-    @Published private(set) var stage = GameStage.initialising {
+    @Published private(set) var stage = GameStage.notStarted {
         didSet { handleStageChanged(oldValue: oldValue) }
     }
     @Published var timeWarp = 1.0 / GameScaling.timeScalingVsSpriteKit {
@@ -33,14 +33,17 @@ final class GameState: NSObject, ObservableObject {
         }) as? CosmicObject
         super.init()
         scene.physicsWorld.contactDelegate = self
-        handleStageChanged(oldValue: .initialising)
-        stage = .intro
+        handleStageChanged(oldValue: .notStarted)
     }
 }
 
 // MARK: - Game stage manipulation public methods
 
 extension GameState {
+    func startGame() {
+        stage = .intro
+    }
+
     func launchRocket() {
         stage = .traversing
     }
@@ -62,7 +65,7 @@ private extension GameState {
         assert(oldValue.allowedStageTransitions.contains(stage))
 
         switch stage {
-        case .initialising: handleStageChangedToInitialising()
+        case .notStarted: handleStageChangedToInitialising()
         case .intro: handleStageChangedToIntro()
         case .positioning: handleStageChangedToPositioning()
         case .traversing: handleStageChangedToTraversing()
@@ -220,7 +223,8 @@ extension GameState: SKPhysicsContactDelegate {
 
 extension GameState {
     enum GameStage {
-        case initialising
+        /// Initial stage, which waits for startGame() call to start running
+        case notStarted
         /// Stage of the game when the scene is previewed to the player
         case intro
         /// Stage of the game when the player is positioning the rocket before the launch
@@ -232,7 +236,7 @@ extension GameState {
 
         var allowedStageTransitions: [GameStage] {
             switch self {
-            case .initialising: return [.intro, .initialising]
+            case .notStarted: return [.intro, .notStarted]
             case .intro: return [.positioning]
             case .positioning: return [.traversing]
             case .traversing: return [.targetReached]
