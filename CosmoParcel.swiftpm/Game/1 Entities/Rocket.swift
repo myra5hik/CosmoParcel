@@ -35,13 +35,17 @@ final class Rocket: GKEntity {
         node.physicsBody?.mass = mass
         node.physicsBody?.linearDamping = 0.0
         // Engine
-        let engineComponent = EngineComponent(thrust: thrust)
-        self.addComponent(engineComponent)
+        self.addComponent(EngineComponent(thrust: thrust))
         // Manual launch positioning component
         if let launchFromObject = launchFromObject {
-            let component = LaunchPositioningComponent(from: launchFromObject)
-            self.addComponent(component)
+            self.addComponent(LaunchPositioningComponent(from: launchFromObject))
         }
+        // Contact component
+        self.addComponent(ContactComponent(
+            ownMask: .rocket,
+            contactTestMask: [.targetObject],
+            collisionMask: [.launchFromObject, .otherObject]
+        ))
     }
 
     @available(*, unavailable)

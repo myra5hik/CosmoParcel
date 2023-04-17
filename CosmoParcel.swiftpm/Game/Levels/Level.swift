@@ -22,15 +22,24 @@ struct Level {
 
     func load(into scene: GameScene, entityManager: EntityManager) {
         // Launch from cosmic object
+        launchObject.addComponent(ContactComponent(
+            ownMask: .launchFromObject, contactTestMask: [], collisionMask: [.targetObject, .otherObject]
+        ))
         entityManager.add(entity: launchObject)
         // Target object
         let targetNode = targetObject.component(ofType: SpriteComponent.self)?.node
         let targetRadius = (targetNode?.size.height ?? 10.0) / 2.0
         targetObject.addComponent(BeaconComponent(radius: targetRadius * 0.4))
+        targetObject.addComponent(ContactComponent(
+            ownMask: .targetObject, contactTestMask: [], collisionMask: [.launchFromObject, .otherObject]
+        ))
         entityManager.add(entity: targetObject)
         targetObject.component(ofType: BeaconComponent.self)?.turnOn()
         // Other objects
         for object in otherObjects {
+            object.addComponent(ContactComponent(
+                ownMask: .otherObject, contactTestMask: [], collisionMask: [.launchFromObject, .targetObject]
+            ))
             entityManager.add(entity: object)
         }
         // Movement configurations
@@ -87,7 +96,7 @@ extension Level {
         // Moon
         let moonRadius = 1_738_100 / metersPerPoint * cosmicObjectsScaleVsReality
         let moon = CosmicObject(
-            mass: 7.342 * pow(10, 22),
+            mass: 9.342 * pow(10, 24),
             position: .init(x: 500, y: 500 + 384_399_000 / metersPerPoint),
             size: .init(width: moonRadius * 2, height: moonRadius * 2),
             texture: .moon1

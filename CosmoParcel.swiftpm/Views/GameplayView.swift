@@ -27,8 +27,14 @@ struct GameplayView: View {
     }
 
     var body: some View {
+        #if DEBUG
+        let options: SpriteView.DebugOptions = [.showsDrawCount, .showsFPS, .showsNodeCount]
+        #else
+        let options: SpriteView.DebugOptions = []
+        #endif
+
         HStack {
-            SpriteView(scene: scene, debugOptions: [.showsDrawCount, .showsFPS, .showsPhysics, .showsNodeCount])
+            SpriteView(scene: scene, debugOptions: options)
                 .aspectRatio(1.0, contentMode: .fit)
             ControlPanelView(gameState: gameState)
                 .layoutPriority(1)
