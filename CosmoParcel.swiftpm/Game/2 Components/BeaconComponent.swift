@@ -37,10 +37,16 @@ extension BeaconComponent {
         node.fillColor = .systemRed
         node.strokeColor = .clear
         // Animation
-        let fadeOut = SKAction.fadeOut(withDuration: 2.0)
-        let fadeIn = SKAction.fadeIn(withDuration: 0.3)
-        let fadeCycle = SKAction.sequence([fadeOut, fadeIn])
-        let infiniteAnimation = SKAction.repeatForever(fadeCycle)
+        let fadeAndEnlarge = SKAction.group([
+            SKAction.fadeOut(withDuration: 3.0),
+            SKAction.scale(to: 3.0, duration: 3.0)
+        ])
+        let reset = SKAction.group([
+            .scale(to: 1.0, duration: .leastNonzeroMagnitude),
+            .fadeIn(withDuration: .leastNonzeroMagnitude)
+        ])
+        let cycle = SKAction.sequence([fadeAndEnlarge, reset])
+        let infiniteAnimation = SKAction.repeatForever(cycle)
         node.run(infiniteAnimation)
         return node
     }
