@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct MainMenuScreen: View {
+    @State private var isNavigatingToLevel = false
+
     var body: some View {
         NavigationView {
             navigationList
-            AboutTheGameScreen()
+            AboutTheGameScreen(onTapOfPlay: { isNavigatingToLevel = true })
         }
     }
 
@@ -32,7 +34,7 @@ struct MainMenuScreen: View {
     private var aboutList: some View {
         Group {
             NavigationLink("About the Game") {
-                AboutTheGameScreen()
+                AboutTheGameScreen(onTapOfPlay: { isNavigatingToLevel = true })
             }
         }
     }
@@ -40,35 +42,20 @@ struct MainMenuScreen: View {
     private var levelsList: some View {
         Group {
             NavigationLink(
-                destination: {
-                    LevelLoadView(
-                        description: Level.triadLevelDescription(),
-                        levelProvider: { Level.triadLevel() }
-                    )
-                },
+                destination: LevelLoadView(
+                    description: Level.triadLevelDescription(),
+                    levelProvider: { Level.triadLevel() }
+                ),
+                isActive: $isNavigatingToLevel,
                 label: { cell(for: Level.triadLevelDescription(), isRecommended: true) }
             )
             NavigationLink(
-                destination: {
-                    LevelLoadView(
-                        description: Level.earthAndMoonDescription(),
-                        levelProvider: { Level.earthAndMoon() }
-                    )
-                },
+                destination: LevelLoadView(
+                    description: Level.earthAndMoonDescription(),
+                    levelProvider: { Level.earthAndMoon() }
+                ),
                 label: { cell(for: Level.earthAndMoonDescription()) }
             )
-//            NavigationLink("Earth and Moon") {
-//                LevelLoadView(
-//                    description: Level.earthAndMoonDescription(),
-//                    levelProvider: { Level.earthAndMoon() }
-//                )
-//            }
-//            NavigationLink("Medium") {
-//                LevelLoadView(
-//                    description: Level.triadLevelDescription(),
-//                    levelProvider: { Level.triadLevel() }
-//                )
-//            }
         }
     }
 

@@ -8,8 +8,26 @@
 import SwiftUI
 
 struct AboutTheGameScreen: View {
+    let onTapOfPlay: () -> Void
+
     var body: some View {
         Form {
+            textWall
+            Section("Play the game") {
+                playButton
+            }
+        }
+        .navigationTitle("About the Game")
+    }
+
+    private var playButton: some View {
+        Button("Go to a Game Level") {
+            onTapOfPlay()
+        }
+    }
+
+    private var textWall: some View {
+        Group {
             Section {
                 let string =
                 """
@@ -58,12 +76,13 @@ struct AboutTheGameScreen: View {
                 Text(string)
             }
         }
-        .navigationTitle("About the Game")
     }
 }
 
+// MARK: - Previews
+
 struct AboutTheGameScreen_Previews: PreviewProvider {
     static var previews: some View {
-        AboutTheGameScreen()
+        AboutTheGameScreen(onTapOfPlay: { /*Nothing*/ })
     }
 }
