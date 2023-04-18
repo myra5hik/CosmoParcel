@@ -9,7 +9,8 @@ let level = Level.mediumLevel()
 struct CosmoParcelApp: App {
     var body: some Scene {
         WindowGroup {
-            GameplayView(level: level)
+            MainMenuScreen()
+//            GameplayView(level: level)
                 .preferredColorScheme(.dark)
         }
     }

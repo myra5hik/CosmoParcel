@@ -48,4 +48,12 @@ extension Level {
             ]
         )
     }
+
+    static func mediumLevelDescription() -> LevelDescription {
+        LevelDescription(
+            title: "Two Planets and Satellite",
+            detail: "Abc",
+            difficulty: .medium
+        )
+    }
 }

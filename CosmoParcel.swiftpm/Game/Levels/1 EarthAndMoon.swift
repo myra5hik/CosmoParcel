@@ -38,4 +38,12 @@ extension Level {
             ]
         )
     }
+
+    static func earthAndMoonDescription() -> LevelDescription {
+        LevelDescription(
+            title: "Earth and Moon",
+            detail: "Abc",
+            difficulty: .easy
+        )
+    }
 }
