@@ -61,9 +61,8 @@ struct ControlPanelView: View {
 
     private var introHint: some View {
         let text = [
-            "Observe the conditions of the mission.",
-            "The colony is sending a signal with a beacon.",
-            "Your mission is to deliver the cargo to the colony."
+            "Your mission is to deliver the cargo to the colony,",
+            "which sends the signal with a beacon",
         ].joined(separator: " ")
 
         return iconAndText(
@@ -82,9 +81,9 @@ struct ControlPanelView: View {
     }
 
     private var positioningHint: some View {
-        iconAndText(
+        return iconAndText(
             icon: "hand.draw.fill",
-            text: "Set the liftoff trajectory on the map",
+            text: "Set the trajectory on the map, then press Launch.",
             accessory: { launchButton }
         )
     }
@@ -102,7 +101,7 @@ struct ControlPanelView: View {
     private var targetReached: some View {
         iconAndText(
             icon: "checkmark.square.fill",
-            text: "Mission accomplished! You have delivered the parcel to the colony."
+            text: "Mission accomplished! You have delivered the cargo to the colony."
         )
     }
 

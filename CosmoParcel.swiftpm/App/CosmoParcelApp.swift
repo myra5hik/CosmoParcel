@@ -9,9 +9,7 @@ let level = Level.triadLevel()
 struct CosmoParcelApp: App {
     var body: some Scene {
         WindowGroup {
-            MainMenuScreen()
-//            GameplayView(level: level)
-                .preferredColorScheme(.dark)
+            MainMenuScreen().preferredColorScheme(.dark)
         }
     }
 }
