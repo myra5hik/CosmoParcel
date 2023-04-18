@@ -72,6 +72,7 @@ struct AboutTheGameScreen: View {
                  • Assess the level: the goal is to deliver the vehicle onto the body with a beacon on it.
                  • When prompted, set the rocket's linear liftoff trajectory.
                  • Press the "Launch" button for liftoff.
+                 • The game is best enjoyed in landscape mode.
                 """
                 Text(string)
             }
