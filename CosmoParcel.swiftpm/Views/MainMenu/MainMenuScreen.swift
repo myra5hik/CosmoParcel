@@ -11,30 +11,29 @@ struct MainMenuScreen: View {
     var body: some View {
         NavigationView {
             navigationList
-            detailView
+            AboutTheGameScreen()
         }
     }
 
     private var navigationList: some View {
         List {
-            Section("Section") {
+            Section("CosmoParcel Game") {
                 aboutList
             }
             Section("Game Levels") {
                 levelsList
             }
+            Section("Credits") {
+                creditsList
+            }
         }
-    }
-
-    private var detailView: some View {
-        Text("Detail")
     }
 
     private var aboutList: some View {
         Group {
-            Text("1")
-            Text("2")
-            Text("3")
+            NavigationLink("About the Game") {
+                AboutTheGameScreen()
+            }
         }
     }
 
@@ -51,6 +50,14 @@ struct MainMenuScreen: View {
                     description: Level.triadLevelDescription(),
                     levelProvider: { Level.triadLevel() }
                 )
+            }
+        }
+    }
+
+    private var creditsList: some View {
+        Group {
+            NavigationLink("List of materials") {
+                CreditsScreen()
             }
         }
     }

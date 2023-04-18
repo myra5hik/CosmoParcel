@@ -39,10 +39,8 @@ struct LevelLoadView: View {
             }
             // Start button
             Section {
-                HStack {
-                    Button("Open this level") {
-                        isShowingFullscreenCover = true
-                    }
+                Button("Open this level") {
+                    isShowingFullscreenCover = true
                 }
             }
         }

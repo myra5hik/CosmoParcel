@@ -35,7 +35,7 @@ struct ControlPanelView: View {
             let multiplier = gameState.timeWarp.formatted(.number.rounded().precision(.fractionLength(0)))
             return HStack {
                 Image(systemName: "forward.fill")
-                Text("Time flow speed: \(multiplier)x")
+                Text("Time speed: \(multiplier)x")
             }
         }
 
@@ -84,7 +84,7 @@ struct ControlPanelView: View {
     private var positioningHint: some View {
         iconAndText(
             icon: "hand.draw.fill",
-            text: "Set the initial rocket's trajectory by dragging a finger over the screen",
+            text: "Set the liftoff trajectory on the map",
             accessory: { launchButton }
         )
     }
@@ -120,11 +120,11 @@ struct ControlPanelView: View {
     private func iconAndText<A: View>(
         icon: String,
         text: String,
-        accessory: () -> A = { EmptyView() }
+        accessory: (() -> A) = { EmptyView() }
     ) -> some View {
         withProminentBackground {
             VStack(spacing: 30) {
-                Image(systemName: icon).font(.system(size: 100))
+                Image(systemName: icon).font(.system(size: 64))
                 Text(text).multilineTextAlignment(.center)
                 accessory()
             }
