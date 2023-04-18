@@ -35,10 +35,9 @@ struct GameplayView: View {
             if isPaused {
                 pauseOverlay
             } else {
-                gamePlayView
+                gamePlayView.padding(.horizontal)
             }
         }
-        .mask { RoundedRectangle(cornerRadius: 16) }
         .onChange(of: isPaused) {
             guard $0 == false else { return }
             gameState.startGame()
@@ -53,12 +52,23 @@ struct GameplayView: View {
         let options: SpriteView.DebugOptions = []
         #endif
 
-        return HStack {
-            SpriteView(scene: scene, isPaused: isPaused, options: .ignoresSiblingOrder, debugOptions: options)
-                .frame(minWidth: 300, minHeight: 300)
+        return GeometryReader { proxy in
+            // Calculations
+            let isLandscape = proxy.size.width > proxy.size.height
+            // Views
+            let spriteView = SpriteView(scene: scene, isPaused: isPaused, options: .ignoresSiblingOrder, debugOptions: options)
                 .aspectRatio(1.0, contentMode: .fit)
-            ControlPanelView(gameState: gameState)
-                .frame(width: 300)
+                .mask { RoundedRectangle(cornerRadius: 12) }
+                .layoutPriority(1)
+            // Control panel is vertical (= thin) when GameplayView is in landscape mode
+            let controlPanel = ControlPanelView(gameState: gameState, isVertical: isLandscape)
+                .padding()
+            // Return
+            if isLandscape {
+                HStack { spriteView; controlPanel }
+            } else {
+                VStack { spriteView; controlPanel }
+            }
         }
     }
 

@@ -10,27 +10,40 @@ import SwiftUI
 struct ControlPanelView: View {
     // Dependencies
     @ObservedObject var gameState: GameState
+    let isVertical: Bool
 
     var body: some View {
-        VStack {
+        let group = Group {
+            if !isVertical { Spacer() }
             timeWarpIndicator
             Spacer()
             appropriateControlPanel
             Spacer()
+        }
+
+        if isVertical {
+            VStack { group }
+        } else {
+            HStack { group }
         }
     }
 
     // MARK: Common
 
     private var timeWarpIndicator: some View {
-        withProminentBackground {
+        let box = withProminentBackground {
             let multiplier = gameState.timeWarp.formatted(.number.rounded().precision(.fractionLength(0)))
             return HStack {
                 Image(systemName: "forward.fill")
                 Text("Time flow speed: \(multiplier)x")
             }
         }
-        .frame(height: 50)
+
+        if isVertical {
+            return AnyView(box.frame(height: 50))
+        } else {
+            return AnyView(box.aspectRatio(1.0, contentMode: .fit))
+        }
     }
 
     @ViewBuilder
@@ -38,7 +51,7 @@ struct ControlPanelView: View {
         switch gameState.stage {
         case .notStarted: EmptyView()
         case .intro: introHint
-        case .positioning: positioningControlPanel
+        case .positioning: positioningHint
         case .cruising: cruisingHint
         case .targetReached: targetReached
         }
@@ -68,19 +81,11 @@ struct ControlPanelView: View {
         )
     }
 
-    // MARK: Positioning
-
-    private var positioningControlPanel: some View {
-        VStack(spacing: 30) {
-            positioningHint
-            launchButton
-        }
-    }
-
     private var positioningHint: some View {
         iconAndText(
             icon: "hand.draw.fill",
-            text: "Set the initial rocket's trajectory by dragging a finger over the screen"
+            text: "Set the initial rocket's trajectory by dragging a finger over the screen",
+            accessory: { launchButton }
         )
     }
 
@@ -112,11 +117,16 @@ struct ControlPanelView: View {
         }
     }
 
-    private func iconAndText(icon: String, text: String) -> some View {
+    private func iconAndText<A: View>(
+        icon: String,
+        text: String,
+        accessory: () -> A = { EmptyView() }
+    ) -> some View {
         withProminentBackground {
             VStack(spacing: 30) {
                 Image(systemName: icon).font(.system(size: 100))
                 Text(text).multilineTextAlignment(.center)
+                accessory()
             }
         }
         .aspectRatio(1.0, contentMode: .fit)
@@ -131,6 +141,6 @@ struct ControlPanelView_Previews: PreviewProvider {
         let entityManager = EntityManager(scene: scene)
         let gameState = GameState(scene: scene, entityManager: entityManager)
 
-        return ControlPanelView(gameState: gameState).frame(width: 300)
+        return ControlPanelView(gameState: gameState, isVertical: true).frame(width: 300)
     }
 }

@@ -99,7 +99,7 @@ extension Level {
         // Moon
         let moonRadius = 1_738_100 / metersPerPoint * cosmicObjectsScaleVsReality
         let moon = CosmicObject(
-            mass: 9.342 * pow(10, 24),
+            mass: 9.342 * pow(10, 22),
             position: .init(x: 500, y: 500 + 384_399_000 / metersPerPoint),
             size: .init(width: moonRadius * 2, height: moonRadius * 2),
             texture: .moon1
