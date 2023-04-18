@@ -47,7 +47,7 @@ struct GameplayView: View {
 
     private var gamePlayView: some View {
         #if DEBUG
-        let options: SpriteView.DebugOptions = [.showsDrawCount, .showsFPS, .showsNodeCount]
+        let options: SpriteView.DebugOptions = [.showsDrawCount, .showsFPS, .showsNodeCount, .showsFields]
         #else
         let options: SpriteView.DebugOptions = []
         #endif
@@ -56,10 +56,15 @@ struct GameplayView: View {
             // Calculations
             let isLandscape = proxy.size.width > proxy.size.height
             // Views
-            let spriteView = SpriteView(scene: scene, isPaused: isPaused, options: .ignoresSiblingOrder, debugOptions: options)
-                .aspectRatio(1.0, contentMode: .fit)
-                .mask { RoundedRectangle(cornerRadius: 12) }
-                .layoutPriority(1)
+            let spriteView = SpriteView(
+                scene: scene,
+                isPaused: isPaused,
+                options: .ignoresSiblingOrder,
+                debugOptions: options
+            )
+            .aspectRatio(1.0, contentMode: .fit)
+            .mask { RoundedRectangle(cornerRadius: 12) }
+            .layoutPriority(1)
             // Control panel is vertical (= thin) when GameplayView is in landscape mode
             let controlPanel = ControlPanelView(gameState: gameState, isVertical: isLandscape)
                 .padding()
