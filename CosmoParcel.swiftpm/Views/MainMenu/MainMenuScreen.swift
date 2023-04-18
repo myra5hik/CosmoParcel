@@ -48,8 +48,8 @@ struct MainMenuScreen: View {
             }
             NavigationLink("Medium") {
                 LevelLoadView(
-                    description: Level.mediumLevelDescription(),
-                    levelProvider: { Level.mediumLevel() }
+                    description: Level.triadLevelDescription(),
+                    levelProvider: { Level.triadLevel() }
                 )
             }
         }

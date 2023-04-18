@@ -8,7 +8,7 @@
 import Foundation
 
 extension Level {
-    static func mediumLevel() -> Level {
+    static func triadLevel() -> Level {
         // Scales
         let metersPerPoint = GameScaling.metersPerPoint
         let cosmicObjectsScaleVsReality = GameScaling.cosmicObjectsScaleVsReality
@@ -49,10 +49,23 @@ extension Level {
         )
     }
 
-    static func mediumLevelDescription() -> LevelDescription {
-        LevelDescription(
-            title: "Two Planets and Satellite",
-            detail: "Abc",
+    static func triadLevelDescription() -> LevelDescription {
+        let detailText =
+        """
+        Welcome to the Tiard level!
+
+        Your goal in this level is to deliver cargo to the satellite that orbits the outermost of three cosmic bodies.
+
+        This level is designed to challenge players while helping them build their visual intuition about how gravity works. The effects of gravity from these three bodies will have a significant impact on the trajectory of the spacecraft.
+
+        Unlike the "Earth and Moon" level, "Triad" does not replicate any particular real cosmic system. Instead, it was created to provide a challenging gameplay experience for players.
+
+        T minus thirty and counting down.
+        """
+
+        return LevelDescription(
+            title: "Triad",
+            detail: detailText,
             difficulty: .medium
         )
     }

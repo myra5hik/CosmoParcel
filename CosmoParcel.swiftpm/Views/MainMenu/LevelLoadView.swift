@@ -71,8 +71,8 @@ struct LevelLoadView: View {
 struct LevelLoadView_Previews: PreviewProvider {
     static var previews: some View {
         LevelLoadView(
-            description: Level.mediumLevelDescription(),
-            levelProvider: { Level.mediumLevel() }
+            description: Level.triadLevelDescription(),
+            levelProvider: { Level.triadLevel() }
         )
     }
 }
