@@ -8,9 +8,6 @@
 import Foundation
 
 struct Level {
-    // Scales
-    private static let metersPerPoint = GameScaling.metersPerPoint
-    private static let cosmicObjectsScaleVsReality = GameScaling.cosmicObjectsScaleVsReality
     // Objects
     let launchObject: CosmicObject
     let targetObject: CosmicObject
@@ -81,37 +78,5 @@ struct Level {
             let clockwise = pair.clockwise
             satellite.component(ofType: GravityComponent.self)?.setOrbiting(around: anchor, clockwise: clockwise)
         }
-    }
-}
-
-// MARK: - Tutorial level
-
-extension Level {
-    static func tutorial() -> Level {
-        // Earth
-        let earthRadius = 6_378_100 / metersPerPoint * cosmicObjectsScaleVsReality
-        let earth = CosmicObject(
-            mass: 5.972168 * pow(10, 24),
-            position: .init(x: 500, y: 500),
-            size: .init(width: earthRadius * 2, height: earthRadius * 2),
-            texture: .planet1
-        )
-        // Moon
-        let moonRadius = 1_738_100 / metersPerPoint * cosmicObjectsScaleVsReality
-        let moon = CosmicObject(
-            mass: 9.342 * pow(10, 22),
-            position: .init(x: 500, y: 500 + 384_399_000 / metersPerPoint),
-            size: .init(width: moonRadius * 2, height: moonRadius * 2),
-            texture: .moon1
-        )
-        // Level
-        return Level(
-            launchObject: earth,
-            targetObject: moon,
-            otherObjects: [],
-            orbitingPairs: [
-                (moon, orbitsAround: earth, clockwise: true)
-            ]
-        )
     }
 }

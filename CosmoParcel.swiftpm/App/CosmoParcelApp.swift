@@ -3,7 +3,7 @@ import SwiftUI
 import SpriteKit
 import GameplayKit
 
-let level = Level.tutorial()
+let level = Level.earthAndMoon()
 
 @main
 struct CosmoParcelApp: App {

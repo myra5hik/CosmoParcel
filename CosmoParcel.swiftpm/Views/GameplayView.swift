@@ -88,6 +88,6 @@ struct GameplayView: View {
 
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
-        GameplayView(level: .tutorial())
+        GameplayView(level: .earthAndMoon())
     }
 }
