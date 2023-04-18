@@ -19,6 +19,7 @@ struct LevelLoadView: View {
 
     var body: some View {
         levelDescription
+            .navigationTitle(description.title)
             .fullScreenCover(
                 isPresented: $isShowingFullscreenCover,
                 onDismiss: nil,
@@ -28,14 +29,13 @@ struct LevelLoadView: View {
 
     private var levelDescription: some View {
         Form {
-            // Title and difficulty
-            Section {
-                Text(description.title).bold()
-                Text("Difficulty: \(description.difficulty.description)")
-            }
             // Detailed text
             Section {
                 Text(description.detail)
+            }
+            // Difficulty
+            Section {
+                Text("Difficulty: \(description.difficulty.description)")
             }
             // Start button
             Section {

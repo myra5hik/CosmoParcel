@@ -23,7 +23,7 @@ extension Level {
         // Moon
         let moonRadius = 1_738_100 / metersPerPoint * cosmicObjectsScaleVsReality
         let moon = CosmicObject(
-            mass: 7.342 * pow(10, 22),
+            mass: 7.342 * pow(10, 22) * 10,
             position: .init(x: 500, y: 500 + 384_399_000 / metersPerPoint),
             size: .init(width: moonRadius * 2, height: moonRadius * 2),
             texture: .moon1
@@ -40,9 +40,24 @@ extension Level {
     }
 
     static func earthAndMoonDescription() -> LevelDescription {
-        LevelDescription(
-            title: "Earth and Moon",
-            detail: "Abc",
+        let detailText =
+        """
+        Welcome to the Earth and Moon level!
+
+        Your goal in this level is to deliver cargo to a human colony located on the Moon.
+
+        It is an easy level designed to help players build their visual intuition about how gravity works. The effects of gravity will have a significant impact on spacecraft's trajectory.
+
+        This level replicates the real scales of the Earth and Moon, with a few exceptions:
+         • The cosmic bodies are 5x larger for better visibility on the map.
+         • The Moon's mass has been increased 10x times to make gameplay easier.
+
+        T minus thirty!
+        """
+
+        return LevelDescription(
+            title: "Earth and Moon  🌍 🌘",
+            detail: detailText,
             difficulty: .easy
         )
     }

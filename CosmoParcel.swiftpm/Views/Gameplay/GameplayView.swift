@@ -47,7 +47,7 @@ struct GameplayView: View {
 
     private var gamePlayView: some View {
         #if DEBUG
-        let options: SpriteView.DebugOptions = [.showsDrawCount, .showsFPS, .showsNodeCount, .showsFields]
+        let options: SpriteView.DebugOptions = [.showsDrawCount, .showsFPS, .showsNodeCount]
         #else
         let options: SpriteView.DebugOptions = []
         #endif
