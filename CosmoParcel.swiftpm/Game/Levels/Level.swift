@@ -40,7 +40,7 @@ struct Level {
             entityManager.add(entity: object)
         }
         // Rocket - Basic setup
-        let rocketMass = 10.0
+        let rocketMass = 1000.0
         let rocketHeight = 12.0
         let engineThrust = launchObject.component(ofType: GravityComponent.self)?
             .thrustRequiredToEscape(rocketHeight: rocketHeight, rocketMass: rocketMass) ?? 0.0
