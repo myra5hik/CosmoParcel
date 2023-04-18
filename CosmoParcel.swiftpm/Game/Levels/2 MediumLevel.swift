@@ -19,7 +19,7 @@ extension Level {
             mass: homePlanetMass,
             position: .init(x: 0 + homePlanetRadius / 2, y: 0 + homePlanetRadius / 2),
             size: .init(width: homePlanetRadius * 2, height: homePlanetRadius * 2),
-            texture: .planet1
+            texture: .planetWet
         )
         // Planet 2
         let planet2Radius = homePlanetRadius * 1.1
@@ -27,7 +27,7 @@ extension Level {
             mass: homePlanetMass * 0.42,
             position: .init(x: 550, y: 50),
             size: .init(width: planet2Radius * 2, height: planet2Radius * 2),
-            texture: .planet1
+            texture: .planetDry
         )
         // Satellite
         let satelliteRadius = homePlanetRadius * 0.8

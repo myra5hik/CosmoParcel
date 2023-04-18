@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "tile181.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

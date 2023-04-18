@@ -18,7 +18,7 @@ extension Level {
             mass: 5.972168 * pow(10, 24),
             position: .init(x: 500, y: 500),
             size: .init(width: earthRadius * 2, height: earthRadius * 2),
-            texture: .planet1
+            texture: .planetWet
         )
         // Moon
         let moonRadius = 1_738_100 / metersPerPoint * cosmicObjectsScaleVsReality

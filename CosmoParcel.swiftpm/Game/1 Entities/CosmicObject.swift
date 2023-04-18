@@ -9,7 +9,7 @@ import SpriteKit
 import GameplayKit
 
 final class CosmicObject: GKEntity {
-    init(mass: Double, position: CGPoint? = nil, size: CGSize? = nil, texture: Texture = .planet1) {
+    init(mass: Double, position: CGPoint? = nil, size: CGSize? = nil, texture: Texture = .planetWet) {
         super.init()
         // Sprite component
         let spriteComponent = SpriteComponent(
@@ -37,8 +37,8 @@ final class CosmicObject: GKEntity {
 
 extension CosmicObject {
     enum Texture: String {
-        case planet1 = "Planet1"
+        case planetWet = "Planet1"
+        case planetDry = "Planet2"
         case moon1 = "Moon1"
-        case star1 = "Star1"
     }
 }
