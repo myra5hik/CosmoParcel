@@ -82,12 +82,12 @@ private extension GameState {
 
     func handleStageChangedToIntro() {
         timeWarp = TimewarpConfig.introTimewarp
-        scene.touchesDelegate = nil
+        scene.touchesDelegate = rocket?.component(ofType: LaunchPositioningComponent.self)
 
         let introDuration = 7.0
         let slowDownFactor = 0.9
         // Camera's initial scale on intro's start
-        camera?.setScale(1.3)
+        camera?.setScale(1.12)
         // Slows down time by slowDownFactor each second
         for delay in stride(from: 1.0, through: introDuration, by: 1.0) {
             DispatchQueue.main.asyncAfter(deadline: .now() + Double(delay)) { [weak self] in

@@ -32,6 +32,7 @@ final class GameScene: SKScene {
         addCamera()
         addTouchesInputNode()
         setupPhysics()
+        addStarsBackground()
     }
 
     @available(*, unavailable)
@@ -59,6 +60,20 @@ final class GameScene: SKScene {
     private func setupPhysics() {
         // Gravity will be driven by individual gravity fields of the cosmic objects
         physicsWorld.gravity = .zero
+    }
+
+    // MARK: Background setup
+
+    func addStarsBackground() {
+        scene?.backgroundColor = .init(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0)
+        // Stars background
+        let texture = SKTexture(imageNamed: "Stars")
+        let bg = SKSpriteNode(texture: texture)
+        bg.position = .init(x: self.size.width / 2, y: self.size.height / 2)
+        bg.alpha = 0.3
+        bg.setScale(1.3)
+        bg.zPosition = -100
+        self.addChild(bg)
     }
 
     // MARK: Touches setup

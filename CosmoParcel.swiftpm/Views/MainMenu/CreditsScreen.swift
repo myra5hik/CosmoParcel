@@ -15,6 +15,7 @@ struct CreditsScreen: View {
                 section(for: $0)
             }
         }
+        .navigationTitle("Materials used in the game")
     }
 
     private var introText: some View {
@@ -69,7 +70,13 @@ private extension CreditsScreen {
                 title: "FlatIcon Rocket ship image",
                 details: nil,
                 license: "Free",
-                url: URL(string: "https://www.freepik.com/free-icon/rocket-ship_14016893.htm#page=6&query=rocket%20pixel%20art&position=8&from_view=search&track=ais")
+                url: URL(string: "https://www.freepik.com/free-icon/rocket-ship_14016893.htm")
+            ),
+            .init(
+                title: "Milky way background",
+                details: nil,
+                license: "CC0",
+                url: URL(string: "https://www.rawpixel.com/image/6034956/photo-image-background-public-domain-star")
             ),
             .init(
                 title: "Ezfig Sprite sheet cutter",
