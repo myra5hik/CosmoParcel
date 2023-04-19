@@ -79,6 +79,12 @@ private extension CreditsScreen {
                 url: URL(string: "https://www.rawpixel.com/image/6034956/photo-image-background-public-domain-star")
             ),
             .init(
+                title: "Fire sprite",
+                details: nil,
+                license: "Free",
+                url: URL(string: "https://todemann.itch.io/fire")
+            ),
+            .init(
                 title: "Ezfig Sprite sheet cutter",
                 details: nil,
                 license: "Free",
