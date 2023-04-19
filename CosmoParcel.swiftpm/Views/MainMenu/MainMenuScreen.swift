@@ -8,67 +8,84 @@
 import SwiftUI
 
 struct MainMenuScreen: View {
-    @State private var isNavigatingToLevel = false
+    @State private var destination: Destination = Destination.aboutScreen
 
     var body: some View {
-        NavigationView {
-            navigationList
-            AboutTheGameScreen(onTapOfPlay: { isNavigatingToLevel = true })
+        navigationView
+    }
+
+    @ViewBuilder
+    private var navigationView: some View {
+        if #available(iOS 16, *) {
+            NavigationSplitView {
+                navigationList
+            } detail: {
+                screen(for: destination)
+            }
+        } else {
+            NavigationView {
+                navigationList
+                screen(for: .aboutScreen)
+            }
         }
     }
 
     private var navigationList: some View {
-        List {
-            Section("CosmoParcel Game") {
-                aboutList
-            }
-            Section("Game Levels") {
-                levelsList
-            }
-            Section("Credits") {
-                creditsList
-            }
+        List() {
+            aboutList
+            Section("Game Levels") { levelsList }
+            Section("Credits") { creditsList }
         }
+        .navigationTitle("CosmoParcel")
     }
 
     private var aboutList: some View {
         Group {
-            NavigationLink("About the Game") {
-                AboutTheGameScreen(onTapOfPlay: { isNavigatingToLevel = true })
-            }
+            cell(for: .aboutScreen)
         }
     }
 
     private var levelsList: some View {
         Group {
-            NavigationLink(
-                destination: LevelLoadView(
-                    description: Level.triadLevelDescription(),
-                    levelProvider: { Level.triadLevel() }
-                ),
-                isActive: $isNavigatingToLevel,
-                label: { cell(for: Level.triadLevelDescription(), isRecommended: true) }
-            )
-            NavigationLink(
-                destination: LevelLoadView(
-                    description: Level.earthAndMoonDescription(),
-                    levelProvider: { Level.earthAndMoon() }
-                ),
-                label: { cell(for: Level.earthAndMoonDescription()) }
-            )
+            cell(for: .level1)
+            cell(for: .level2)
         }
     }
 
     private var creditsList: some View {
         Group {
-            NavigationLink("List of materials") {
-                CreditsScreen()
-            }
+            cell(for: .credits)
         }
     }
 }
 
+// MARK: - Component factories
+
 private extension MainMenuScreen {
+    @ViewBuilder
+    private func screen(for selection: Destination) -> some View {
+        switch selection {
+        case .aboutScreen: AboutTheGameScreen()
+        case .level1: LevelLoadView(description: Level.triadLevelDescription(), levelProvider: { Level.triadLevel() })
+        case .level2: LevelLoadView(description: Level.earthAndMoonDescription(), levelProvider: { Level.earthAndMoon() })
+        case .credits: CreditsScreen()
+        }
+    }
+
+    @ViewBuilder
+    func cell(for destination: Destination) -> some View {
+        let label: () -> AnyView = {
+            switch destination {
+            case .aboutScreen: return AnyView(Text("About the Game"))
+            case .level1: return AnyView(cell(for: Level.triadLevelDescription(), isRecommended: true))
+            case .level2: return AnyView(cell(for: Level.earthAndMoonDescription()))
+            case .credits: return AnyView(Text("List of materials"))
+            }
+        }
+
+        NavigationLink(destination: screen(for: destination), label: label)
+    }
+
     func cell(for level: LevelDescription, isRecommended: Bool = false) -> some View {
         HStack {
             VStack(alignment: .leading) {
@@ -94,6 +111,17 @@ private extension MainMenuScreen {
         return Text(difficulty.description)
             .font(.caption)
             .foregroundColor(color)
+    }
+}
+
+// MARK: - Navigation destinations
+
+private extension MainMenuScreen {
+    enum Destination: String, Hashable {
+        case aboutScreen
+        case level1
+        case level2
+        case credits
     }
 }
 

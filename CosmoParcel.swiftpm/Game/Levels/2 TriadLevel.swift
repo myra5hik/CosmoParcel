@@ -52,7 +52,7 @@ extension Level {
     static func triadLevelDescription() -> LevelDescription {
         let detailText =
         """
-        Welcome to the Tiard level!
+        Welcome to the Triad level!
 
         Your goal in this level is to deliver cargo to the satellite that orbits the outermost of three cosmic bodies.
 

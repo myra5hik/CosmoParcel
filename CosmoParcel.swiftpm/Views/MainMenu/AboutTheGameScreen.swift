@@ -8,22 +8,11 @@
 import SwiftUI
 
 struct AboutTheGameScreen: View {
-    let onTapOfPlay: () -> Void
-
     var body: some View {
         Form {
             textWall
-            Section("Play the game") {
-                playButton
-            }
         }
         .navigationTitle("About the Game")
-    }
-
-    private var playButton: some View {
-        Button("Go to a Game Level") {
-            onTapOfPlay()
-        }
     }
 
     private var textWall: some View {
@@ -84,6 +73,6 @@ struct AboutTheGameScreen: View {
 
 struct AboutTheGameScreen_Previews: PreviewProvider {
     static var previews: some View {
-        AboutTheGameScreen(onTapOfPlay: { /*Nothing*/ })
+        AboutTheGameScreen()
     }
 }
