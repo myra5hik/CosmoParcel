@@ -65,7 +65,7 @@ extension LaunchPositioningComponent: ITouchesInputDelegate {
 
     private func updateTrajectoryNode(point: CGPoint) {
         guard let launchFromNode = launchFromNode else { return }
-        var path = CGMutablePath()
+        let path = CGMutablePath()
         path.move(to: launchFromNode.position)
         path.addLine(to: point)
         trajectoryGuideNode?.path = path

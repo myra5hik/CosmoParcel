@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LevelLoadView: View {
+    @StateObject private var gameplayViewVm: GameplayView.ViewModel
     @State private var isShowingFullscreenCover = false
     private let description: LevelDescription
     private let levelProvider: () -> Level
@@ -15,6 +16,7 @@ struct LevelLoadView: View {
     init(description: LevelDescription, levelProvider: @escaping () -> Level) {
         self.description = description
         self.levelProvider = levelProvider
+        self._gameplayViewVm = .init(wrappedValue: .init(levelProvider: levelProvider))
     }
 
     var body: some View {
@@ -41,17 +43,20 @@ struct LevelLoadView: View {
             Section {
                 Button("Open this level") {
                     isShowingFullscreenCover = true
+                    gameplayViewVm.startOrRestartLevel()
                 }
             }
         }
     }
 
+    @ViewBuilder
     private var fullscreenCover: some View {
         NavigationView {
-            GameplayView(level: levelProvider())
+            GameplayView(vm: gameplayViewVm)
                 .navigationTitle(description.title)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
+                    ToolbarItem { restartButton }
                     ToolbarItem { modalCloseButton }
                 }
         }
@@ -60,6 +65,12 @@ struct LevelLoadView: View {
     private var modalCloseButton: some View {
         Button("Close") {
             isShowingFullscreenCover = false
+        }
+    }
+
+    private var restartButton: some View {
+        Button("Restart") {
+            gameplayViewVm.startOrRestartLevel()
         }
     }
 }

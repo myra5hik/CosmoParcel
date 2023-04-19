@@ -9,64 +9,31 @@ import SwiftUI
 import SpriteKit
 
 struct GameplayView: View {
-    // Public
-    private(set) var gameState: GameState
-    // Private
-    private let scene: GameScene
-    private let entityManager: EntityManager
-    private let level: Level
-    // State
-    @State private var isPaused = true
+    @ObservedObject private(set) var vm: ViewModel
 
-    init(level: Level) {
-        // Creates dependencies
-        let scene = GameScene()
-        self.scene = scene
-        self.entityManager = EntityManager(scene: scene)
-        self.level = level
-        // Loads level
-        level.load(into: scene, entityManager: entityManager)
-        // Sets game state
-        self.gameState = GameState(scene: scene, entityManager: entityManager)
+    init(vm: ViewModel) {
+        self.vm = vm
     }
 
     var body: some View {
-        ZStack {
-            if isPaused {
-                pauseOverlay
-            } else {
-                gamePlayView.padding(.horizontal)
-            }
-        }
-        .onChange(of: isPaused) {
-            guard $0 == false else { return }
-            gameState.startGame()
-            level.applyInitialPhysics()
-        }
+        gamePlayView.padding(.horizontal)
     }
 
     private var gamePlayView: some View {
-        #if DEBUG
-        let options: SpriteView.DebugOptions = [.showsDrawCount, .showsFPS, .showsNodeCount]
-        #else
-        let options: SpriteView.DebugOptions = []
-        #endif
-
-        return GeometryReader { proxy in
+        GeometryReader { proxy in
             // Calculations
             let isLandscape = proxy.size.width > proxy.size.height
             // Views
             let spriteView = SpriteView(
-                scene: scene,
-                isPaused: isPaused,
-                options: .ignoresSiblingOrder,
-                debugOptions: options
+                scene: vm.scene,
+                options: .ignoresSiblingOrder
             )
             .aspectRatio(1.0, contentMode: .fit)
             .mask { RoundedRectangle(cornerRadius: 12) }
             .layoutPriority(1)
+            .id(ObjectIdentifier(vm.scene))
             // Control panel is vertical (= thin) when GameplayView is in landscape mode
-            let controlPanel = ControlPanelView(gameState: gameState, isVertical: isLandscape)
+            let controlPanel = ControlPanelView(gameState: vm.gameState, isVertical: isLandscape)
                 .padding()
             // Return
             if isLandscape {
@@ -76,15 +43,40 @@ struct GameplayView: View {
             }
         }
     }
+}
 
-    private var pauseOverlay: some View {
-        ZStack {
-            Rectangle()
-                .foregroundColor(Color(.systemGray5))
-            Button("Start Level") {
-                isPaused = false
+// MARK: - ViewModel
+
+extension GameplayView {
+    final class ViewModel: ObservableObject {
+        private(set) var scene: GameScene
+        private(set) var gameState: GameState
+        private(set) var level: Level?
+        private let levelProvider: () -> Level
+        private var entityManager: EntityManager
+
+        init(levelProvider: @escaping () -> Level) {
+            // Creates dependencies
+            let scene = GameScene()
+            self.scene = scene
+            self.entityManager = EntityManager(scene: scene)
+            self.levelProvider = levelProvider
+            // Sets game state
+            self.gameState = GameState(scene: scene, entityManager: entityManager)
+        }
+
+        func startOrRestartLevel() {
+            scene = GameScene()
+            entityManager = EntityManager(scene: scene)
+            let level = levelProvider()
+            self.level = level
+            level.load(into: scene, entityManager: entityManager)
+            gameState = GameState(scene: scene, entityManager: entityManager)
+            gameState.startGame()
+            objectWillChange.send()
+            DispatchQueue.main.async {
+                level.applyInitialPhysics()
             }
-            .buttonStyle(.bordered)
         }
     }
 }
@@ -93,6 +85,7 @@ struct GameplayView: View {
 
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
-        GameplayView(level: .earthAndMoon())
+        let vm = GameplayView.ViewModel(levelProvider: { .earthAndMoon() })
+        GameplayView(vm: vm)
     }
 }
