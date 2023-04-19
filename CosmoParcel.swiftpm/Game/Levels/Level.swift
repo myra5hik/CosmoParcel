@@ -41,7 +41,7 @@ struct Level {
         }
         // Rocket - Basic setup
         let rocketMass = 1000.0
-        let rocketHeight = 12.0
+        let rocketHeight = 14.0
         let engineThrust = launchObject.component(ofType: GravityComponent.self)?
             .thrustRequiredToEscape(rocketHeight: rocketHeight, rocketMass: rocketMass) ?? 0.0
         guard let launchFromNode = launchObject.component(ofType: SpriteComponent.self)?.node else {
