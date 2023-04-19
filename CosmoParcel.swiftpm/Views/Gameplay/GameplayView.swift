@@ -74,7 +74,7 @@ extension GameplayView {
             gameState = GameState(scene: scene, entityManager: entityManager)
             gameState.startGame()
             objectWillChange.send()
-            DispatchQueue.main.async {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 level.applyInitialPhysics()
             }
         }
